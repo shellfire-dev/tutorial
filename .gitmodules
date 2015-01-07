@@ -1,0 +1,12 @@
+[submodule "overdrive/etc/shellfire/paths.d"]
+	path = overdrive/etc/shellfire/paths.d
+	url = https://github.com/shellfire-dev/paths.d.git
+[submodule "overdrive/lib/shellfire/jsonreader"]
+	path = overdrive/lib/shellfire/jsonreader
+	url = https://github.com/shellfire-dev/jsonreader.git
+[submodule "overdrive/lib/shellfire/unicode"]
+	path = overdrive/lib/shellfire/unicode
+	url = https://github.com/shellfire-dev/unicode.git
+[submodule "overdrive/lib/shellfire/xmlwriter"]
+	path = overdrive/lib/shellfire/xmlwriter
+	url = https://github.com/shellfire-dev/xmlwriter.git
