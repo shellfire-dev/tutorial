@@ -71,9 +71,6 @@ _program()
 _program_name='overdrive'
 _program_version='unversioned'
 _program_package_or_build=''
-_program_copyright='(c) 2014 normanville'
-_program_licence='MIT'
-_program_written_by='normanville'
 _program_path="$([ "${_program_fattening_program_path+set}" = 'set' ] && printf '%s\n' "$_program_fattening_program_path" || ([ "${0%/*}" = "${0}" ] && printf '%s\n' '.' || printf '%s\n' "${0%/*}"))"
 _program_libPath="${_program_path}/lib"
 _program_etcPath="${_program_path}/etc"
