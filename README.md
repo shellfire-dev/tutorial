@@ -660,7 +660,7 @@ That's it - you've got a complete standalone program in `fattened`.
 
 ## [swaddle] & build
 
-[swaddle] takes 'swaddling' and creates packages, package repositories and website content. [shellfire] provides a build system that can incorporate [swaddle] and combine it with [fatten]. To do this, we'll add some more structure to our project:-
+[swaddle] takes 'swaddling' and creates packages, package repositories and website content. [shellfire] provides a [build] system that can incorporate [swaddle] and combine it with [fatten]. It also can do a lot more - [build] programs are just regular [shellfire] code, so you can incorporate whatever you want. To do this, we'll add some more structure to our project:-
 
 ```bash
 overdrive/
