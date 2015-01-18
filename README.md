@@ -611,9 +611,163 @@ Let's convert the data: `./overdrive --output-path ~/output-path -- ./gearbox.js
 
 ## [fatten]ing
 
-TO DO.
+[fatten]ing is the process of turning our [shellfire] application into a standalone program. To do, this let's add a little more structure to our project:-
+
+```bash
+overdrive/
+	.gitignore
+	output/
+	tools/
+		fatten/
+			fatten
+	COPYRIGHT
+```
+
+Make sure you're in the top-level directory (`overdride`) before following these steps.
+
+Firstly, we'll added `output` to `.gitignore`:-
+
+```bash
+echo 'output' >>.gitignore
+```
+
+Then make all the necessary folders:-
+
+```bash
+mkdir -m 0755 -p output tools/fatten
+```
+
+Now, let's get a copy of [fatten] and put it at `tools/fatten/fatten`, eg
+
+```bash
+curl 'https://github.com/shellfire-dev/fatten/releases/download/release_2015.0116.1415-1/fatten_2015.0116.1415-1_all' >'tools/fatten/fatten_2015.0116.1415-1_all'
+cd tools/fatten
+ln -s fatten_2015.0116.1415-1_all fatten
+cd -
+chmod +x fatten
+```
+
+(Note: you can also just add it as a git submodule at `tools/fatten`; either works - these are [shellfire] applications (;-)).
+
+Now add a `COPYRIGHT` file in [machine-readable Debian format](https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/) to `overdrive/COPYRIGHT`. [fatten] uses this to embed licensing information inside your standalone program. An example is the [tutorial's COPYRIGHT file](https://github.com/shellfire-dev/tutorial/blob/master/COPYRIGHT). If you're not already using this format, we highly recommend it - it is an unambigious way of expressing how which parts of the code are licensed and copyrighted.
+
+Now we can fatten our program, eg
+
+```bash
+tools/fatten/fatten --force --output-path ./output -- overdrive
+```
+That's it - you've got a complete standalone program in `fattened`.
+
+## [swaddle] & build
+
+[swaddle] takes 'swaddling' and creates packages, package repositories and website content. [shellfire] provides a build system that can incorporate [swaddle] and combine it with [fatten]. To do this, we'll add some more structure to our project:-
+
+```bash
+overdrive/
+	tools/
+		swaddle/
+			swaddle
+	swaddling/
+		overdrive/
+	README.md
+```
+
+### Install [swaddle]
+Let's add the necessary folders first:-
+
+```bash
+mkdir -m 0755 -p tools/swaddle
+```
+
+Now, let's get a copy of [swaddle] and put it at `tools/swaddle/swaddle`, eg
+
+```bash
+curl 'https://github.com/raphaelcohn/swaddle/releases/download/release_2015.0117.1737-2/swaddle_2015.0117.1737-1_all' >'tools/swaddle/swaddle_2015.0117.1737-1_all'
+cd tools/swaddle
+ln -s swaddle_2015.0117.1737-1_all swaddle
+cd -
+chmod +x fatten
+```
+
+(Note: you can also just add it as a git submodule at `tools/swaddle`; this way is recommended, as when run swaddle will then automatically install its dependencies).
 
 
+### Create README.md
+If you don't have a `README.md`, create one. [swaddle] uses it to provide package documentation.
+
+### Add swaddling
+
+Let's add the necessary folders first:-
+
+```bash
+mkdir -m 0755 -p swaddling/overdrive/{tar,deb,skeleton/all}
+```
+
+Now we'll create some essential files.
+
+```bash
+cat >swaddling/swaddling.conf <<-EOF
+	configure swaddle host_base_url 'https://shellfire-dev.github.io/MY_GITHUB_USER/download'
+	configure swaddle bugs_url 'https://github.com/MY_GITHUB_USER/overdrive/issues'
+	configure swaddle maintainer_name 'Raphael Cohn'
+	configure swaddle maintainer_comment 'Package Signing Key'
+	configure swaddle maintainer_email 'raphael.cohn@stormmq.com'
+	configure swaddle sign no
+	configure swaddle vendor MY_ORG
+EOF
+cat >swaddling/overdrive/package.conf <<-EOF
+	configure swaddle_package description \
+	"Overdrive is a tutorial application
+	The first line is used as a summary."
+EOF
+cat >swaddling/overdrive/deb/deb.conf <<-EOF
+	configure swaddle_deb depends dash
+	configure swaddle_deb compression gzip
+EOF
+cat >swaddling/overdrive/tar/tar.conf <<-EOF
+	configure swaddle_tar compressions gzip
+	configure swaddle_tar compressions xz
+EOF
+# Make sure we don't check stuff in
+touch swaddling/overdrive/skeleton/all/.gitignore
+echo 'body' >swaddling/overdrive/.gitignore
+```
+
+#### Add the [build] framework
+
+First up, let's add the submodule and then link it's ready-to-use-build script into the root of our repository:-
+
+```bash
+mkdir -p lib/shellfire
+cd lib/shellfire
+git submodule add "https://github.com/shellfire-dev/build"
+cd -
+git submodule update --init
+
+ln -s lib/shellfire/build
+```
+
+Now, let's add some sensible build steps, eg
+
+```bash
+cat >./build.shellfire <<-EOF
+
+build()
+{
+	build_prepareOutput
+	build_fattenAndSwaddle 'overdrive' "$build_relativePath" 'overdrive'
+}
+
+EOF
+```
+
+#### All Set? Let's build it
+
+At this point, havoc will be unleashed!
+
+```bash
+./build
+```
 
 [shellfire]: https://github.com/shellfire-dev "shellfire homepage"
 [fatten]: https://github.com/shellfire-dev/fatten "fatten homepage"
@@ -630,3 +784,4 @@ TO DO.
 [version]: https://github.com/shellfire-dev/version "shellfire version module homepage"
 [xmlwriter]: https://github.com/shellfire-dev/xmlwriter "shellfire xmlwriter module homepage"
 [paths.d]: https://github.com/shellfire-dev/paths.d "shellfire paths.d path data homepage"
+[build]: https://github.com/shellfire-dev/build "shellfire build module homepage"
