@@ -609,58 +609,9 @@ Now, let's try it out. Copy this JSON to `overdrive/gearbox.json:-
 
 Let's convert the data: `./overdrive --output-path ~/output-path -- ./gearbox.json`. Take a look at `~/output-path/gearbox.xml`. Right, now, let's try again: `./overdrive --output-path ~/output-path -- ./gearbox.json`. Good, our logic stops an overwrite. Specify `-f` and try again: `./overdrive --output-path ~/output-path -f -- ./gearbox.json`.
 
-## [fatten]ing
+## [fatten]ing and [swaddle] using [build]
 
-[fatten]ing is the process of turning our [shellfire] application into a standalone program. To do, this let's add a little more structure to our project:-
-
-```bash
-overdrive/
-	.gitignore
-	output/
-	tools/
-		fatten/
-			fatten
-	COPYRIGHT
-```
-
-Make sure you're in the top-level directory (`overdride`) before following these steps.
-
-Firstly, we'll added `output` to `.gitignore`:-
-
-```bash
-echo 'output' >>.gitignore
-```
-
-Then make all the necessary folders:-
-
-```bash
-mkdir -m 0755 -p output tools/fatten
-```
-
-Now, let's get a copy of [fatten] and put it at `tools/fatten/fatten`, eg
-
-```bash
-curl 'https://github.com/shellfire-dev/fatten/releases/download/release_2015.0116.1415-1/fatten_2015.0116.1415-1_all' >'tools/fatten/fatten_2015.0116.1415-1_all'
-cd tools/fatten
-ln -s fatten_2015.0116.1415-1_all fatten
-cd -
-chmod +x fatten
-```
-
-(Note: you can also just add it as a git submodule at `tools/fatten`; either works - these are [shellfire] applications (;-)).
-
-Now add a `COPYRIGHT` file in [machine-readable Debian format](https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/) to `overdrive/COPYRIGHT`. [fatten] uses this to embed licensing information inside your standalone program. An example is the [tutorial's COPYRIGHT file](https://github.com/shellfire-dev/tutorial/blob/master/COPYRIGHT). If you're not already using this format, we highly recommend it - it is an unambigious way of expressing how which parts of the code are licensed and copyrighted.
-
-Now we can fatten our program, eg
-
-```bash
-tools/fatten/fatten --force --output-path ./output -- overdrive
-```
-That's it - you've got a complete standalone program in `fattened`.
-
-## [build] & [swaddle]
-
-[shellfire] provides a [build] system that can incorporate [swaddle] and combine it with [fatten]. It also can do a lot more - [build] programs are just regular [shellfire] code, so you can incorporate whatever you want. To see how to add [build] to your project, see the [Quick Tutorial](https://github.com/shellfire-dev/build#overview). To incorporate [swaddle], you can then follow the [Build with swaddle Tutorial](https://github.com/shellfire-dev/build/tree/development#build-with-swaddle-tutorial).
+[fatten]ing is the process of turning our [shellfire] application into a standalone program. [swaddle] can then take this and create packages, tarballs, Apt repositories and Yum repos, release notes on GitHub, etc. [shellfire] has a [build] framework that you can use to [fatten], [swaddle] and more: [build] scripts are just regular [shellfire] code, so you can incorporate whatever you want. To see how to add [build] to your project, see the [Quick Tutorial](https://github.com/shellfire-dev/build#overview). To incorporate [swaddle], you can then follow the [Build with swaddle Tutorial](https://github.com/shellfire-dev/build/tree/development#build-with-swaddle-tutorial).
 
 
 [shellfire]: https://github.com/shellfire-dev "shellfire homepage"
