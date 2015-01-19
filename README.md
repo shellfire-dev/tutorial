@@ -658,9 +658,14 @@ tools/fatten/fatten --force --output-path ./output -- overdrive
 ```
 That's it - you've got a complete standalone program in `fattened`.
 
-## [swaddle] & build
+## [build] & [swaddle]
 
-[swaddle] takes 'swaddling' and creates packages, package repositories and website content. [shellfire] provides a [build] system that can incorporate [swaddle] and combine it with [fatten]. It also can do a lot more - [build] programs are just regular [shellfire] code, so you can incorporate whatever you want. To do this, we'll add some more structure to our project:-
+[shellfire] provides a [build] system that can incorporate [swaddle] and combine it with [fatten]. It also can do a lot more - [build] programs are just regular [shellfire] code, so you can incorporate whatever you want. To see how to add [build] to your project, see the [Quick Tutorial](https://github.com/shellfire-dev/build#overview). To incorporate [swaddle], you can then follow the [Build with Swaddle Tutorial]().
+
+
+
+
+[swaddle] takes 'swaddling' and creates packages, package repositories and website content.  To do this, we'll add some more structure to our project:-
 
 ```bash
 overdrive/
@@ -671,6 +676,8 @@ overdrive/
 		overdrive/
 	README.md
 ```
+
+If you're interested, follow the [build overview](https://github.com/shellfire-dev/build#overview).
 
 ### Install [swaddle]
 Let's add the necessary folders first:-
