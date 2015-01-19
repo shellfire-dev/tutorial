@@ -744,7 +744,7 @@ git submodule add "https://github.com/shellfire-dev/build"
 cd -
 git submodule update --init
 
-ln -s lib/shellfire/build
+ln -s lib/shellfire/build/build
 ```
 
 Now, let's add some sensible build steps, eg
