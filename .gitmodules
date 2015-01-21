@@ -1,6 +1,9 @@
 [submodule "overdrive/etc/shellfire/paths.d"]
 	path = overdrive/etc/shellfire/paths.d
 	url = https://github.com/shellfire-dev/paths.d.git
+[submodule "overdrive/lib/shellfire/core"]
+	path = overdrive/lib/shellfire/core
+	url = https://github.com/shellfire-dev/core.git
 [submodule "overdrive/lib/shellfire/jsonreader"]
 	path = overdrive/lib/shellfire/jsonreader
 	url = https://github.com/shellfire-dev/jsonreader.git
