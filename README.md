@@ -1,5 +1,12 @@
 # A 10 min tutorial to create the [shellfire] application 'overdrive'
-If you'd rather not follow along, or if you'd prefer to see a complete application, take a look at the files in `overdrive`. (On a Mac with TextMate, `mate tutorial/overdrive`).
+If you'd rather not follow along, or if you'd prefer to see a complete application, take a look at the files in `overdrive`. (On a Mac with TextMate, `mate tutorial/overdrive`). To run the completed tutorial, clone this repository, then run in the project root:
+
+```bash
+git submodule update --init
+cd overdrive
+./overdrive gearbox.json
+cat gearbox.xml
+```
 
 'overdrive' is intended to be a simple application that converts 'GearBox' JSON files to XML. It shows how to quickly parse command lines, validate arguments and use the JSON and XML libraries.
 
