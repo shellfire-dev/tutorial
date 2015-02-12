@@ -89,6 +89,8 @@ _program_entrypoint='overdrive'
 . "$_program_libPath"/shellfire/core/init.functions "$@"
 ```
 
+(Boilerplate code will enable program to load libraries and other dependency code , which makes this script standalone)
+
 Now run it with `./overdrive` - you should see `Hello World`. Try `./overdrive --help` and `./overdrive --version`. Of course, this isn't a very useful program. Let's at least give it a purpose.
 
 ## Parsing the command line
