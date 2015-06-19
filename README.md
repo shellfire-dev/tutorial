@@ -75,6 +75,9 @@ _program()
 	}
 }
 
+# boilerplate code
+# starts here --> 
+
 _program_name='overdrive'
 _program_version='unversioned'
 _program_package_or_build=''
@@ -84,10 +87,14 @@ _program_etcPath="${_program_path}/etc"
 _program_varPath="${_program_path}/var"
 _program_entrypoint='overdrive'
 
+# < -- ends here
 
 # Assumes pwd, and so requires this code to be running from this folder
 . "$_program_libPath"/shellfire/core/init.functions "$@"
 ```
+
+Boilerplate code will enable program to load libraries and other dependency code , which makes this script standalone
+
 
 Now run it with `./overdrive` - you should see `Hello World`. Try `./overdrive --help` and `./overdrive --version`. Of course, this isn't a very useful program. Let's at least give it a purpose.
 
