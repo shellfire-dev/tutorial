@@ -68,10 +68,76 @@ _program()
 	}
 }
 
+_program_path_find()
+{
+	if [ "${_program_fattening_program_path+set}" = 'set' ]; then
+		printf '%s\n' "$_program_fattening_program_path"
+		
+	elif [ "${0%/*}" = "$0" ]; then
+
+		# We've been invoked by the interpreter as, say, bash program
+		if [ -r "$0" ]; then
+			pwd -P
+		# Clutching at straws; probably run via a download, anonymous script, etc, weird execve, etc
+		else
+			printf '\n'
+		fi
+		
+	else
+	
+		# We've been invoked with a relative or absolute path (also when invoked via PATH in a shell)
+		
+		_program_path_find_parentPath()
+		{
+			parentPath="${scriptPath%/*}"
+			if [ -z "$parentPath" ]; then
+				parentPath='/'
+			fi
+			cd "$parentPath" 1>/dev/null
+		}
+		
+		# pdksh / mksh have problems with unsetting a variable that was never set...
+		if [ "${CDPATH+set}" = 'set' ]; then
+			unset CDPATH
+		fi
+		
+		if command -v realpath 1>/dev/null 2>/dev/null; then
+			(
+				scriptPath="$(realpath "$0")"
+				
+				_program_path_find_parentPath
+				pwd -P
+			)
+		elif command -v readlink 1>/dev/null 2>/dev/null; then
+			(
+				scriptPath="$0"
+				
+				while [ -L "$scriptPath" ]
+				do
+					_program_path_find_parentPath
+					scriptPath="$(readlink "$scriptPath")"
+				done
+
+				_program_path_find_parentPath
+				pwd -P
+			)
+		else
+			# This approach will fail in corner cases where the script itself is a symlink in a path not parallel with the concrete script
+			(
+				scriptPath="$0"
+				
+				_program_path_find_parentPath
+				pwd -P
+			)
+		fi
+		
+	fi
+}
+
 _program_name='overdrive'
 _program_version='unversioned'
 _program_package_or_build=''
-_program_path="$([ "${_program_fattening_program_path+set}" = 'set' ] && printf '%s\n' "$_program_fattening_program_path" || ([ "${0%/*}" = "${0}" ] && printf '%s\n' '.' || printf '%s\n' "${0%/*}"))"
+_program_path="$(_program_path_find)"
 _program_libPath="${_program_path}/lib"
 _program_etcPath="${_program_path}/etc"
 _program_varPath="${_program_path}/var"
