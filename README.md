@@ -158,6 +158,8 @@ Let's start by taking some arguments using [core]'s command line parser. We're g
 Let's add the function `_program_commandLine_handleNonOptions()`. This is called back by the parser to let us handle non-options. We could use this take a list of files to work on. Let's use [shellfire] arrays:-
 
 ```bash
+# Place all code above the last line:
+# '. "$_program_libPath"/shellfire/core/init.functions "$@"'
 _program_commandLine_handleNonOptions()
 {
 	core_variable_array_initialise overdrive_jsonGearBoxFiles
@@ -314,7 +316,7 @@ _program_commandLine_validate()
 That's a bit tough, though. Why don't we let an administrator set a value in configuration? Configuration is automatically parsed and loaded immediately prior to command line parsing. Of course, if that's the case, we'll need to validate what they've chosen. And, in this case, just because it makes sense, we could default the output path to the current working directory, but let the user know.
 
 ```bash
-# Replace _program_commandLine_handleNonOptions() with
+# Replace _program_commandLine_validate() with
 _program_commandLine_validate()
 {
 	if core_variable_isSet overdrive_outputPath; then
@@ -335,7 +337,7 @@ _program_commandLine_helpMessage()
 	_program_commandLine_helpMessage_usage="[OPTION]... -- [JSON GEAR BOX FILE]..."
 	_program_commandLine_helpMessage_description="Turns JSON into XML."
 	_program_commandLine_helpMessage_options="
-  -s, --output-path PATH      PATH to output to.
+  -o, --output-path PATH      PATH to output to.
                               Defaults to current working directory:-
                               $(pwd)"
     _program_commandLine_helpMessage_optionsSpacing='     '
@@ -365,7 +367,7 @@ _program_commandLine_helpMessage()
 	_program_commandLine_helpMessage_usage="[OPTION]... -- [JSON GEAR BOX FILE]..."
 	_program_commandLine_helpMessage_description="Turns JSON into XML."
 	_program_commandLine_helpMessage_options="
-  -s, --output-path PATH      PATH to output to.
+  -o, --output-path PATH      PATH to output to.
                               Defaults to current working directory:-
                               $overdrive_outputPath_default"
     _program_commandLine_helpMessage_optionsSpacing='     '
